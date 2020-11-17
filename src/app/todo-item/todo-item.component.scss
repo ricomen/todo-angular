@@ -1,0 +1,17 @@
+.list-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px dashed;
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+  &__id {
+    margin: 0 10px;
+  }
+  &__button {
+    margin-left: auto;
+  }
+}

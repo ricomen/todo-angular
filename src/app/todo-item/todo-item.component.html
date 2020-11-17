@@ -1,0 +1,20 @@
+<li class="list-item"
+    *ngFor="let item of list"
+    [item]="item"
+>
+  <span class="input-checkbox">
+    <input type="checkbox"
+           name="isCompleted"
+           (change)="changeStatus(item.id, $event.target.checked)"
+           [checked]="isCompleted"
+    />
+  </span>
+
+  <b class="list-item__id">{{item.id}}</b>
+  <span class="todo-description">{{item.title}}</span>
+
+  <button class="list-item__button"
+          type="button"
+          (click)="removeItem(item.id)"
+  >Удалить</button>
+</li>
