@@ -1,4 +1,4 @@
-<form>
-  <input type="text" />
+<form (submit)="onSubmit()">
+  <input type="text" name="title" [(ngModel)]="title"/>
   <button>Создать</button>
 </form>

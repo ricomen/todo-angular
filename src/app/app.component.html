@@ -1,10 +1,16 @@
 <div class="todo">
 
-  <div class="todo-add"></div>
+  <div class="todo-add"
+       (onCreate)="onCreate($event)"
+  ></div>
 
   <hr/>
 
-  <div class="todo-list"></div>
+  <div class="todo-list"
+       [items]="items"
+  >
+
+  </div>
 
 </div>
 

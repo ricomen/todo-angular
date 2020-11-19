@@ -1,11 +1,10 @@
 <li class="list-item"
-    *ngFor="let item of list"
-    [item]="item"
+    *ngFor="let item of items"
 >
   <span class="input-checkbox">
     <input type="checkbox"
            name="isCompleted"
-           (change)="changeStatus(item.id, $event.target.checked)"
+           (change)="onCompleted(item.id, $event.target.checked)"
            [checked]="isCompleted"
     />
   </span>
@@ -15,6 +14,6 @@
 
   <button class="list-item__button"
           type="button"
-          (click)="removeItem(item.id)"
+          (click)="onRemove(item.id)"
   >Удалить</button>
 </li>

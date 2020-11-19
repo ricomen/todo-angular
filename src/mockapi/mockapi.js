@@ -9,8 +9,9 @@ const mockServer = {
     },
 
   routes() {
+    this.namespace = "api"
     this.get(
-      "api/list",
+      "/list",
       () => (
         [
             {
@@ -35,8 +36,15 @@ const mockServer = {
             },
           ]
       ),
-      { timing: 1000 }
-    )
+      { timing: 100 }
+    );
+    this.post("/list", (schema, request) => {
+      return {
+        id: Math.floor(Math.random() * 100),
+        title: JSON.parse(request.requestBody),
+        completed: false
+      }
+    })
   },
 };
 

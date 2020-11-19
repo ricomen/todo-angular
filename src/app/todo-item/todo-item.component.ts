@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, Output, ViewChild} from '@angular/core';
 
 @Component({
   selector: '.list',
@@ -8,9 +8,16 @@ import {Component, Input, OnInit, ViewChild} from '@angular/core';
 export class TodoItemComponent implements OnInit {
   constructor() {}
 
-  @Input() list;
-  // @ViewChild()
+  @Input() items;
 
   ngOnInit(): void {};
+
+  onCompleted(id, status): void {
+    console.log(id, status)
+  }
+
+  onRemove(id):void {
+
+  }
 
 }
