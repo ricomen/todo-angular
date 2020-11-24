@@ -15,8 +15,12 @@ export class ToDoHttpService {
     return this.http.post('https://localhost:4200/api/list', { body });
   };
 
+  patch(todo): Observable<any> {
+    return this.http.patch('https://localhost:4200/api/list/' + todo.id,  { completed: todo.status });
+  };
+
   delete(id): Observable<any> {
-    return this.http.delete('https://localhost:4200/api/list:' + id);
+    return this.http.delete('https://localhost:4200/api/list/' + id);
   };
 
 };

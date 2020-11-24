@@ -35,6 +35,10 @@ export class AppComponent implements OnInit {
     this.eventBus.on('todo-list:remove-item').subscribe((meta: MetaData) => {
       this.onDelete(meta.data);
     })
+
+    this.eventBus.on('todo-list:change-status').subscribe((meta: MetaData) => {
+      this.onComplete(meta.data);
+    })
   }
 
   getList(): void {
@@ -49,19 +53,23 @@ export class AppComponent implements OnInit {
   };
 
   onCreate(todo): void {
-    this.toDoService.create(todo).subscribe(todo => {
-      this.list.push(todo);
+    this.toDoService.create(todo).subscribe(res => {
+      this.list.push(res.todo);
       this.updateList();
     });
   };
 
-  onComplete(id) {
-
+  onComplete(todo) {
+    this.toDoService.patch(todo).subscribe(({todo}) => {
+      this.list = this.list.map( it => it.id !== todo.id ? it : todo);
+      this.updateList();
+    });
   };
 
   onDelete(id) {
-    this.toDoService.delete(id).subscribe(todo => {
-      console.log(todo);
+    this.toDoService.delete(id).subscribe(res => {
+      this.list = this.list.filter( it => it.id !==id );
+      this.updateList();
     })
   };
 };

@@ -3,7 +3,7 @@ import { RestSerializer, Model } from "miragejs"
 const mockServer = {
   serializers: {
     reminder: RestSerializer.extend({
-      include: ["list"],
+      include: ["todo"],
       embed: true,
     }),
   },
@@ -14,25 +14,32 @@ const mockServer = {
 
   routes() {
     this.namespace = "api"
+
     this.get("/list", (schema, request) => {
         return schema.todos.all();
-    },
-      { timing: 100 });
+    }, { timing: 100 });
 
     this.post("/list", (schema, request) => {
-      return {
-        id: Math.floor(Math.random() * 100),
+      return schema.todos.create({
         title: JSON.parse(request.requestBody).body,
         completed: false
-      }
-    });
-
-    this.delete('/list:1', (schema, request) => {
-
-      return {
-        id: request,
-      }
+      })
     })
+
+    this.patch("/list/:id", (schema, request) => {
+      let completed = JSON.parse(request.requestBody);
+      let id = request.params.id
+      let todo = schema.todos.find(id)
+
+      return todo.update(completed);
+    })
+
+    this.delete("/list/:id", (schema, request) => {
+      let id = request.params.id
+      schema.todos.find(id).destroy();
+      return schema.todos.find(id);
+    })
+
   },
 
   seeds(server) {

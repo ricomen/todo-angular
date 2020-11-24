@@ -11,13 +11,11 @@ export class TodoItemComponent implements OnInit {
   constructor(private eventBus: NgEventBus) {}
 
   @Input() items;
-  // @Output() complete: EventEmitter<any> = new EventEmitter<any>();
-  // @Output() remove: EventEmitter<any> = new EventEmitter<any>();
 
   ngOnInit(): void {};
 
   onComplete(id, status): void {
-    console.log(id, status)
+    this.eventBus.cast('todo-list:change-status', {id, status})
   };
 
   onDelete(id): void {
