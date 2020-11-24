@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { ToDoHttpService } from "./todo.http.service";
+import { NgEventBus } from 'ng-event-bus';
 
 // Api
 import { createServer } from "miragejs"
 import mockServer from '../mockapi/mockapi';
+import {MetaData} from "ng-event-bus/lib/meta-data";
 
 createServer(mockServer);
 
@@ -15,27 +17,51 @@ createServer(mockServer);
 
 export class AppComponent implements OnInit {
 
-  constructor(private http: HttpClient ) {};
+  public list;
 
-  public items;
+  constructor(
+    private toDoService: ToDoHttpService,
+    private eventBus: NgEventBus
+  ) {};
 
   ngOnInit(): void {
+
     this.getList();
-  }
 
-  getList() {
-    this.http.get('https://localhost:4200/api/list')
-      .subscribe(data => {
-        this.items = data;
-      });
-  }
+    this.eventBus.on('todo-list:add').subscribe((meta:MetaData) => {
+      this.onCreate(meta.data);
+    });
 
-  onCreate(title) {
-    this.http.post('https://localhost:4200/api/list', {
-      body: title
-    }).subscribe((res) => {
-      this.items.push(res)
+    this.eventBus.on('todo-list:remove-item').subscribe((meta: MetaData) => {
+      this.onDelete(meta.data);
     })
   }
 
-}
+  getList(): void {
+    this.toDoService.getList().subscribe(data => {
+      this.list = data.todos;
+      this.updateList();
+    });
+  };
+
+  updateList(): void {
+    this.eventBus.cast('todo-list', this.list);
+  };
+
+  onCreate(todo): void {
+    this.toDoService.create(todo).subscribe(todo => {
+      this.list.push(todo);
+      this.updateList();
+    });
+  };
+
+  onComplete(id) {
+
+  };
+
+  onDelete(id) {
+    this.toDoService.delete(id).subscribe(todo => {
+      console.log(todo);
+    })
+  };
+};

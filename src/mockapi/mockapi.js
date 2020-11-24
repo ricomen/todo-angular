@@ -1,51 +1,50 @@
-import { RestSerializer } from "miragejs"
+import { RestSerializer, Model } from "miragejs"
 
 const mockServer = {
-    serializers: {
-      reminder: RestSerializer.extend({
-        include: ["list"],
-        embed: true,
-      }),
-    },
+  serializers: {
+    reminder: RestSerializer.extend({
+      include: ["list"],
+      embed: true,
+    }),
+  },
+
+  models: {
+    todo: Model,
+  },
 
   routes() {
     this.namespace = "api"
-    this.get(
-      "/list",
-      () => (
-        [
-            {
-              id: 1,
-              title: 'Some task 1',
-              completed: false
-            },
-            {
-              id: 2,
-              title: 'Some task 2',
-              completed: false
-            },
-            {
-              id: 3,
-              title: 'Some task 3',
-              completed: false
-            },
-            {
-              id: 4,
-              title: 'Some task 4',
-              completed: false
-            },
-          ]
-      ),
-      { timing: 100 }
-    );
+    this.get("/list", (schema, request) => {
+        return schema.todos.all();
+    },
+      { timing: 100 });
+
     this.post("/list", (schema, request) => {
       return {
         id: Math.floor(Math.random() * 100),
-        title: JSON.parse(request.requestBody),
+        title: JSON.parse(request.requestBody).body,
         completed: false
+      }
+    });
+
+    this.delete('/list:1', (schema, request) => {
+
+      return {
+        id: request,
       }
     })
   },
+
+  seeds(server) {
+    server.create('todo', {
+      title: 'Some task 1',
+      completed: false
+    }),
+    server.create('todo', {
+      title: 'Some task 2',
+      completed: false
+    })
+  }
 };
 
 export default mockServer;

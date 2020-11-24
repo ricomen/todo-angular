@@ -1,19 +1,21 @@
 <li class="list-item"
-    *ngFor="let item of items"
+    [ngClass]="{'list-item--completed': item.completed }"
+    *ngFor="let item of items; let idx = index"
+
 >
   <span class="input-checkbox">
     <input type="checkbox"
            name="isCompleted"
-           (change)="onCompleted(item.id, $event.target.checked)"
-           [checked]="isCompleted"
+           (change)="onComplete(item.id, $event.target.checked)"
+           [checked]="item.completed"
     />
   </span>
 
-  <b class="list-item__id">{{item.id}}</b>
+  <b class="list-item__idx">{{idx + 1}}</b>
   <span class="todo-description">{{item.title}}</span>
 
   <button class="list-item__button"
           type="button"
-          (click)="onRemove(item.id)"
+          (click)="onDelete(item.id)"
   >Удалить</button>
 </li>

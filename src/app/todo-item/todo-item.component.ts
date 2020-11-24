@@ -1,4 +1,6 @@
-import {Component, Input, OnInit, Output, ViewChild} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { NgEventBus } from 'ng-event-bus';
+import { MetaData } from "ng-event-bus/lib/meta-data";
 
 @Component({
   selector: '.list',
@@ -6,18 +8,20 @@ import {Component, Input, OnInit, Output, ViewChild} from '@angular/core';
   styleUrls: ['./todo-item.component.scss']
 })
 export class TodoItemComponent implements OnInit {
-  constructor() {}
+  constructor(private eventBus: NgEventBus) {}
 
   @Input() items;
+  // @Output() complete: EventEmitter<any> = new EventEmitter<any>();
+  // @Output() remove: EventEmitter<any> = new EventEmitter<any>();
 
   ngOnInit(): void {};
 
-  onCompleted(id, status): void {
+  onComplete(id, status): void {
     console.log(id, status)
-  }
+  };
 
-  onRemove(id):void {
-
-  }
+  onDelete(id): void {
+    this.eventBus.cast('todo-list:remove-item', id)
+  };
 
 }

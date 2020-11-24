@@ -1,5 +1,6 @@
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
-// import {HttpClient} from "@angular/common/http";
+import { Component, OnInit } from '@angular/core';
+import { NgEventBus } from 'ng-event-bus';
+import { MetaData } from "ng-event-bus/lib/meta-data";
 
 @Component({
   selector: '.todo-add',
@@ -9,18 +10,20 @@ import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 
 
 export class TodoAddComponent implements OnInit {
-  public title = '';
-  constructor() {};
+  public title: string;
 
-  @Output() onCreate: EventEmitter<any> = new EventEmitter<any>();
+  constructor(private eventBus: NgEventBus) {};
+
+  // @Output() onCreate: EventEmitter<any> = new EventEmitter<any>();
 
   ngOnInit(): void {}
 
   onSubmit(): void {
     if (this.title) {
-      this.onCreate.emit(this.title);
-      this.title = '';
+      // this.onCreate.emit(this.title);
+      this.eventBus.cast('todo-list:add', this.title);
     }
+    this.title = '';
   };
 
-}
+};

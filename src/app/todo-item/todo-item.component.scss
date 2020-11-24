@@ -7,8 +7,11 @@
     &:last-child {
       margin-bottom: 0;
     }
+  &--completed {
+    background-color: #5E8C00;
+  }
 
-  &__id {
+  &__idx {
     margin: 0 10px;
   }
   &__button {

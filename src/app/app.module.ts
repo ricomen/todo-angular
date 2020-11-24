@@ -7,22 +7,25 @@ import { AppComponent } from './app.component';
 import { TodoItemComponent } from './todo-item/todo-item.component';
 import { TodoAddComponent } from './todo-add/todo-add.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
-import {FormsModule} from "@angular/forms";
+import { FormsModule } from "@angular/forms";
+import { NgEventBus } from "ng-event-bus";
 
 @NgModule({
   declarations: [
     AppComponent,
     TodoItemComponent,
     TodoAddComponent,
-    TodoListComponent
+    TodoListComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
   ],
-  providers: [],
+  providers: [
+    NgEventBus
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

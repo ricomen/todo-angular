@@ -1,6 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
-
-
+import { Component, Input, OnInit } from '@angular/core';
+import { NgEventBus } from 'ng-event-bus';
+import { MetaData } from "ng-event-bus/lib/meta-data";
 
 @Component({
   selector: '.todo-list',
@@ -9,11 +9,13 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 
 export class TodoListComponent implements OnInit {
+  constructor(private eventBus: NgEventBus) {};
+  public items: [{}];
 
-  constructor() {};
-
-  @Input() items;
-
-  ngOnInit(): void {};
+  ngOnInit(): void {
+    this.eventBus.on('todo-list').subscribe((meta:MetaData) => {
+      this.items = meta.data;
+    });
+  };
 
 }
